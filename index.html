@@ -200,7 +200,7 @@ footer b{color:var(--ink);font-weight:700;}
   <span class="scrim" aria-hidden="true"></span>
   <div class="wrap hero-in">
     <span class="eyebrow">동해시 · Donghae City</span>
-    <h1>동해, 바다를 걷다</h1>
+    <h1>동해, 바다와 백두대간을 걷다</h1>
     <p>촛대바위의 일출부터 묵호의 골목, 두타산 계곡까지. 명소를 눌러 이야기를 열어 보세요.</p>
     <div class="meta">
       <span class="chip-static">명소 9곳</span>
@@ -255,7 +255,7 @@ footer b{color:var(--ink);font-weight:700;}
   </div>
 </div>
 
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=966042d4fa3bd296453851d197ec5f80&autoload=false&libraries=services"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=966042d4fa3bd296453851d197ec5f80&autoload=false"></script>
 <script>
 const CATS = ["전체","바다·해변","산·계곡","명소·체험","항구"];
 const ILLO = {
@@ -403,21 +403,20 @@ renderQuiz();
 (function(){
   var el = document.getElementById('kakaomap');
   if(!el) return;
-  var FALLBACK = {
-    chodae:[37.4452,129.1449], mureung:[37.4555,129.0400], nongol:[37.5496,129.1162],
-    dokkaebi:[37.5520,129.1187], lighthouse:[37.5505,129.1176], mukho:[37.5483,129.1155],
-    mangsang:[37.5905,129.0978], cheongok:[37.5250,129.1128], hanseom:[37.5232,129.1365]
+  var COORDS = {
+    chodae:[37.4458,129.1445], mureung:[37.4557,129.0356], nongol:[37.5498,129.1158],
+    dokkaebi:[37.5471,129.1180], lighthouse:[37.5504,129.1171], mukho:[37.5488,129.1153],
+    mangsang:[37.5903,129.0971], cheongok:[37.5255,129.1110], hanseom:[37.5226,129.1346]
   };
   function fail(){ el.innerHTML='<div class="maploadfail">지도를 불러오지 못했습니다.<br>카카오 개발자 콘솔 &gt; 플랫폼 &gt; Web 에<br>이 사이트 주소가 등록됐는지 확인해 주세요.</div>'; }
   if(!(window.kakao && kakao.maps && kakao.maps.load)){ fail(); return; }
   kakao.maps.load(function(){
-    var center = new kakao.maps.LatLng(37.5247,129.1140);
-    var map = new kakao.maps.Map(el, { center:center, level:8 });
+    var map = new kakao.maps.Map(el, { center:new kakao.maps.LatLng(37.5247,129.1140), level:8 });
     map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
     var bounds = new kakao.maps.LatLngBounds();
-    var ps = (kakao.maps.services && kakao.maps.services.Places) ? new kakao.maps.services.Places() : null;
-    var done = 0, total = SPOTS.length;
-    function place(s, pos){
+    SPOTS.forEach(function(s){
+      var c = COORDS[s.id]; if(!c) return;
+      var pos = new kakao.maps.LatLng(c[0], c[1]);
       var m = document.createElement('div');
       m.className = 'kmarker' + (s.sea?' sea':'');
       m.textContent = (SPOTS.indexOf(s)+1);
@@ -425,23 +424,8 @@ renderQuiz();
       m.addEventListener('click', function(){ openDetail(s.id); });
       new kakao.maps.CustomOverlay({ position:pos, content:m, xAnchor:0.5, yAnchor:0.5, zIndex:3 }).setMap(map);
       bounds.extend(pos);
-    }
-    function finish(){ done++; if(done===total){ try{ map.setBounds(bounds,20,20,20,20); }catch(e){} } }
-    SPOTS.forEach(function(s){
-      var fb = FALLBACK[s.id];
-      if(ps){
-        ps.keywordSearch(s.name, function(data, status){
-          var pos=null;
-          if(status===kakao.maps.services.Status.OK && data && data[0]){ pos=new kakao.maps.LatLng(data[0].y, data[0].x); }
-          else if(fb){ pos=new kakao.maps.LatLng(fb[0], fb[1]); }
-          if(pos) place(s, pos);
-          finish();
-        }, { location:center, radius:25000 });
-      } else {
-        if(fb) place(s, new kakao.maps.LatLng(fb[0], fb[1]));
-        finish();
-      }
     });
+    map.setBounds(bounds,24,24,24,24);
   });
 })();
 </script>
