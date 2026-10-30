@@ -3,399 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>동해시 인터랙티브 투어 가이드</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 아이콘 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Open Graph 태그 (SNS 공유 미리보기 최적화) -->
-    <meta property="og:title" content="동해시 스마트 투어 가이드">
-    <meta property="og:description" content="바다와 산이 품은 힐링 시티, 동해시의 5대 권역과 맞춤 코스를 만나보세요!">
-    <meta property="og:type" content="website">
-</head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
-
-    <!-- 상단 헤더 -->
-    <header class="bg-gradient-to-r from-blue-700 to-sky-600 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="location.href='index.html'">
-                <div class="bg-white/20 p-2.5 rounded-full">
-                    <i class="fa-solid fa-compass text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-black tracking-tight">동해시 스마트 투어</h1>
-                    <p class="text-xs text-sky-100">바다와 산이 품은 힐링 시티, 동해로의 초대</p>
-                </div>
-            </div>
-            <div class="mt-3 sm:mt-0 flex items-center space-x-2">
-                <button onclick="sharePage()" class="bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full transition flex items-center space-x-2 border border-white/25 shadow-sm">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <span>페이지 공유하기</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- 메인 컨테이너 -->
-    <main class="max-w-5xl mx-auto px-4 py-6 space-y-8">
-
-        <!-- 인트로 배너 및 권역 필터 -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-            <div class="text-center max-w-2xl mx-auto mb-6">
-                <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Guide</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">어디로 떠나고 싶으신가요?</h2>
-                <p class="text-slate-600 text-sm mt-1">동해시의 5대 핵심 권역을 자유롭게 탐색하고 나만의 코스를 완성해 보세요.</p>
-            </div>
-
-            <!-- 권역 필터 버튼 -->
-            <div id="region-filters" class="flex flex-wrap justify-center gap-2">
-                <button onclick="filterRegion('all')" class="filter-btn active px-4 py-2 rounded-xl text-sm font-bold bg-blue-600 text-white shadow-sm transition">전체 보기</button>
-                <button onclick="filterRegion('mukhob')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">묵호권역 (감성·뷰)</button>
-                <button onclick="filterRegion('mureung')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">무릉권역 (대자연)</button>
-                <button onclick="filterRegion('chuam')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">추암권역 (일출·기암)</button>
-                <button onclick="filterRegion('cheonok')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">천곡권역 (도심동굴)</button>
-                <button onclick="filterRegion('mangsang')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">망상권역 (레저·캠핑)</button>
-            </div>
-        </section>
-
-        <!-- 명소 카드 그리드 섹션 -->
-        <section>
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-slate-900"><i class="fa-solid fa-map-location-dot text-blue-600 mr-2"></i>동해 주요 명소 모음</h3>
-                <span id="spot-count" class="text-xs text-slate-500 font-medium">총 12개 명소</span>
-            </div>
-            <div id="spots-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- JavaScript를 통해 동적 생성 -->
-            </div>
-        </section>
-
-        <!-- 맞춤 코스 추천기 & 디지털 스탬프 투어 2단 그리드 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- 맞춤 코스 추천 섹션 -->
-            <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center space-x-2 mb-3">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-500 text-lg"></i>
-                        <h3 class="text-lg font-bold text-slate-900">AI 맞춤 코스 추천기</h3>
-                    </div>
-                    <p class="text-xs text-slate-500 mb-4">여행 스타일을 선택하시면 동선에 최적화된 추천 일정을 제안해 드립니다.</p>
-                    
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <button onclick="generateItinerary('healing')" class="style-btn border border-slate-200 hover:border-blue-500 p-3 rounded-xl text-left transition bg-slate-50/50">
-                            <span class="block font-bold text-sm text-slate-800">🌿 힐링 자연파</span>
-                            <span class="block text-[11px] text-slate-500 mt-0.5">무릉계곡·건강숲 코스</span>
-                        </button>
-                        <button onclick="generateItinerary('photo')" class="style-btn border border-slate-200 hover:border-blue-500 p-3 rounded-xl text-left transition bg-slate-50/50">
-                            <span class="block font-bold text-sm text-slate-800">📸 감성 인생샷파</span>
-                            <span class="block text-[11px] text-slate-500 mt-0.5">논골담길·스카이밸리 코스</span>
-                        </button>
-                        <button onclick="generateItinerary('sunrise')" class="style-btn border border-slate-200 hover:border-blue-500 p-3 rounded-xl text-left transition bg-slate-50/50">
-                            <span class="block font-bold text-sm text-slate-800">🌅 일출 & 기암괴석</span>
-                            <span class="block text-[11px] text-slate-500 mt-0.5">추암 촛대바위 코스</span>
-                        </button>
-                        <button onclick="generateItinerary('leisure')" class="style-btn border border-slate-200 hover:border-blue-500 p-3 rounded-xl text-left transition bg-slate-50/50">
-                            <span class="block font-bold text-sm text-slate-800">🏄 액티비티 캠핑</span>
-                            <span class="block text-[11px] text-slate-500 mt-0.5">망상·무릉별유천지 코스</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="itinerary-result" class="bg-blue-50/60 border border-blue-100 p-4 rounded-xl text-sm text-slate-700">
-                    <span class="font-semibold text-blue-900 block mb-1"><i class="fa-solid fa-info-circle mr-1"></i> 가이드 팁</span>
-                    위의 버튼 중 마음에 드는 여행 스타일을 클릭해 보세요!
-                </div>
-            </section>
-
-            <!-- 디지털 스탬프 투어 섹션 -->
-            <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-stamp text-rose-500 text-lg"></i>
-                            <h3 class="text-lg font-bold text-slate-900">디지털 스탬프 투어</h3>
-                        </div>
-                        <span id="stamp-counter" class="text-xs font-bold bg-rose-100 text-rose-700 px-2.5 py-1 rounded-full">0 / 4 달성</span>
-                    </div>
-                    <p class="text-xs text-slate-500 mb-4">주요 명소를 방문하셨다면 가상 스탬프를 꾹 눌러 채워보세요!</p>
-
-                    <div id="stamp-list" class="space-y-2.5">
-                        <!-- 스탬프 항목들 동적 렌더링 -->
-                    </div>
-                </div>
-
-                <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center">
-                    <span class="text-xs text-slate-400">모든 스탬프를 모으면 배지가 활성화됩니다!</span>
-                    <button onclick="resetStamps()" class="text-xs text-slate-500 hover:text-rose-600 underline transition">초기화</button>
-                </div>
-            </section>
-        </div>
-
-    </main>
-
-    <!-- 푸터 -->
-    <footer class="bg-slate-900 text-slate-400 py-10 mt-16 border-t border-slate-800">
-        <div class="max-w-5xl mx-auto px-4 text-center space-y-3">
-            <p class="text-sm font-semibold text-slate-300">동해시 인터랙티브 투어 가이드 — 바다와 산을 잇는 스마트 여행</p>
-            <p class="text-xs text-slate-500">&copy; 2026 Donghae-si Tour Guide Project. Powered by Google Cloud & GitHub.</p>
-        </div>
-    </footer>
-
-    <!-- 공유 완료 토스트 메시지 -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-xl transform translate-y-24 opacity-0 transition-all duration-300 z-50 text-sm flex items-center space-x-2">
-        <i class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toast-msg">링크가 클립보드에 복사되었습니다!</span>
-    </div>
-
-    <!-- 자바스크립트 로직 -->
-    <script>
-        // 관광 명소 데이터베이스
-        const spots = [
-            {
-                id: 'mukho-sky',
-                name: '도째비골 스카이밸리 & 해랑전망대',
-                region: 'mukhob',
-                category: '묵호권역',
-                desc: '바다 위를 걷는 아찔한 스카이워크와 시원한 해상 보행교, 스릴 넘치는 자이언트 슬라이드 체험.',
-                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
-                badge: '오션뷰 & 익스트림'
-            },
-            {
-                id: 'nongol',
-                name: '논골담길 & 묵호등대',
-                region: 'mukhob',
-                category: '묵호권역',
-                desc: '파도소리와 바다풍경이 어우러진 언덕 골목길, 어부들의 삶과 정겨운 벽화가 가득한 감성 산책로.',
-                image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80',
-                badge: '감성 포토스팟'
-            },
-            {
-                id: 'mureung',
-                name: '무릉계곡 (무릉반석·폭포)',
-                region: 'mureung',
-                category: '무릉권역',
-                desc: '신선이 노닐던 무릉도원. 기암괴석과 삼화사, 웅장한 용추·쌍폭포가 흐르는 대자연의 힐링처.',
-                image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
-                badge: '명승지 & 계곡'
-            },
-            {
-                id: 'mureung-byeol',
-                name: '무릉별유천지',
-                region: 'mureung',
-                category: '무릉권역',
-                desc: '석회석 광산에서 에메랄드빛 호수와 라벤더 정원이 숨쉬는 이색 복합 문화 레저 공간.',
-                image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-                badge: '이색 호수정원'
-            },
-            {
-                id: 'chuam',
-                name: '추암 촛대바위 & 출렁다리',
-                region: 'chuam',
-                category: '추암권역',
-                desc: '애국가 첫 소절 배경으로 유명한 기암괴석과 일출 명소, 바다 위를 가로지르는 아찔한 출렁다리.',
-                image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=600&q=80',
-                badge: '대한민국 대표 일출'
-            },
-            {
-                id: 'cheonok-cave',
-                name: '천곡황금박쥐동굴',
-                region: 'cheonok',
-                category: '천곡권역',
-                desc: '국내 유일의 도심 속 천연 석회암 종석 동굴이자 멸종위기 황금박쥐가 서식하는 신비의 공간.',
-                image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
-                badge: '도심 속 자연동굴'
-            },
-            {
-                id: 'hansum',
-                name: '한섬감성바닷길',
-                region: 'cheonok',
-                category: '천곡권역',
-                desc: '때묻지 않은 해안선을 따라 걷는 데크 산책로와 파도 소리를 온전히 즐길 수 있는 숨은 명소.',
-                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
-                badge: '해안 산책로'
-            },
-            {
-                id: 'mangsang',
-                name: '망상해수욕장 & 캠핑리조트',
-                region: 'mangsang',
-                category: '망상권역',
-                desc: '끝없이 펼쳐진 동해안 최대 백사장과 울창한 송림, 최고급 오토캠핑장 및 한옥마을의 조화.',
-                image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80',
-                badge: '국내 최고 해양휴양'
-            }
-        ];
-
-        // 스탬프 투어 대상 명소
-        let stamps = [
-            { id: 'mukho-sky', name: '도째비골 스카이밸리', checked: false },
-            { id: 'nongol', name: '논골담길 감성벽화마을', checked: false },
-            { id: 'mureung', name: '무릉계곡 무릉반석', checked: false },
-            { id: 'chuam', name: '추암 촛대바위 일출', checked: false }
-        ];
-
-        // 페이지 로드 시 초기화
-        window.addEventListener('DOMContentLoaded', () => {
-            renderSpots(spots);
-            renderStamps();
-            checkUrlParams();
-        });
-
-        // 명소 카드 렌더링 함수
-        function renderSpots(data) {
-            const grid = document.getElementById('spots-grid');
-            document.getElementById('spot-count.textContent');
-            document.getElementById('spot-count').innerText = `총 ${data.length}개 명소`;
-            
-            if(data.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">해당 권역에 등록된 명소가 없습니다.</div>`;
-                return;
-            }
-
-            grid.innerHTML = data.map(spot => `
-                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition border border-slate-100 flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="${spot.image}" alt="${spot.name}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow">
-                                ${spot.badge}
-                            </span>
-                        </div>
-                        <div class="p-5">
-                            <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">${spot.category}</span>
-                            <h4 class="text-lg font-bold text-slate-900 mt-1 mb-2">${spot.name}</h4>
-                            <p class="text-slate-600 text-xs leading-relaxed">${spot.desc}</p>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-50">
-                        <button onclick="shareSpot('${spot.name}')" class="text-xs font-semibold text-slate-500 hover:text-blue-600 flex items-center space-x-1 transition">
-                            <i class="fa-solid fa-link"></i>
-                            <span>이 명소 공유</span>
-                        </button>
-                        <span class="text-[11px] bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg">동해시 추천</span>
-                    </div>
-                </div>
-            `).join('');
+    <title>동해시 인터랙티브 투어 - DONGHAE TRAVEL GUIDE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
         }
-
-        // 권역별 필터링
-        function filterRegion(region) {
-            // 버튼 활성화 상태 변경
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-sm');
-                btn.classList.add('bg-slate-100', 'text-slate-600');
-            });
-            event.currentTarget.classList.remove('bg-slate-100', 'text-slate-600');
-            event.currentTarget.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-sm');
-
-            if(region === 'all') {
-                renderSpots(spots);
-            } else {
-                const filtered = spots.filter(s => s.region === region);
-                renderSpots(filtered);
-            }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
-
-        // 맞춤 코스 생성기
-        function generateItinerary(type) {
-            const resultBox = document.getElementById('itinerary-result');
-            let content = '';
-
-            if(type === 'healing') {
-                content = `<strong>🌿 힐링 자연파 추천 코스 (1박 2일)</strong><br>
-                1일차: 무릉계곡(무릉반석 & 삼화사 산책) ➔ 동해무릉건강숲 휴양<br>
-                2일차: 무릉별유천지 에메랄드 호수 탐방 및 힐링 정원 산책`;
-            } else if(type === 'photo') {
-                content = `<strong>📸 감성 인생샷파 추천 코스 (1박 2일)</strong><br>
-                1일차: 논골담길 벽화마을 탐방 ➔ 묵호등대 오션뷰 감상<br>
-                2일차: 도째비골 스카이밸리 & 해랑전망대 스릴 체험 및 수변공원 미식`;
-            } else if(type === 'sunrise') {
-                content = `<strong>🌅 일출 & 기암괴석 코스 (당일치기)</strong><br>
-                새벽: 추암해변 촛대바위 일출 감상<br>
-                오전: 추암 출렁다리 및 해암정 산책 ➔ 천곡황금박쥐동굴 탐방`;
-            } else if(type === 'leisure') {
-                content = `<strong>🏄 액티비티 캠핑 코스 (1박 2일)</strong><br>
-                1일차: 망상해수욕장 백사장 산책 및 오토캠핑장 캠핑<br>
-                2일차: 무릉별유천지 루지 체험 및 한섬감성바닷길 트레킹`;
-            }
-
-            resultBox.innerHTML = content;
-            showToast('맞춤 코스가 성공적으로 생성되었습니다!');
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        // 스탬프 렌더링
-        function renderStamps() {
-            const list = document.getElementById('stamp-list');
-            const completedCount = stamps.filter(s => s.checked).length;
-            document.getElementById('stamp-counter').innerText = `${completedCount} / ${stamps.length} 달성`;
-
-            list.innerHTML = stamps.map(stamp => `
-                <div onclick="toggleStamp('${stamp.id}')" class="flex items-center justify-between p-3 rounded-xl border ${stamp.checked ? 'border-rose-200 bg-rose-50/50 text-rose-900' : 'border-slate-100 bg-slate-50/50 text-slate-700'} cursor-pointer hover:border-blue-300 transition">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-6 h-6 rounded-full flex items-center justify-center ${stamp.checked ? 'bg-rose-500 text-white' : 'bg-slate-200 text-slate-400'}">
-                            <i class="fa-solid fa-check text-xs"></i>
-                        </div>
-                        <span class="text-sm font-semibold">${stamp.name}</span>
-                    </div>
-                    <span class="text-xs ${stamp.checked ? 'text-rose-600 font-bold' : 'text-slate-400'}">${stamp.checked ? '스탬프 완료!' : '클릭하여 찍기'}</span>
-                </div>
-            `).join('');
+        /* Header / Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0f2b5c 0%, #0077b6 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-
-        // 스탬프 체크 토글
-        function toggleStamp(id) {
-            const target = stamps.find(s => s.id === id);
-            if(target) {
-                target.checked = !target.checked;
-                renderStamps();
-                if(target.checked) showToast(`'${target.name}' 스탬프가 획득되었습니다!`);
-            }
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
         }
-
-        // 스탬프 초기화
-        function resetStamps() {
-            stamps.forEach(s => s.checked = false);
-            renderStamps();
-            showToast('스탬프 기록이 초기화되었습니다.');
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #90e0ef;
         }
-
-        // 페이지 공유 기능
-        function sharePage() {
-            if(navigator.share) {
-                navigator.share({
-                    title: '동해시 인터랙티브 투어 가이드',
-                    text: '바다와 산이 품은 힐링 시티, 동해시의 5대 권역 투어 가이드를 만나보세요!',
-                    url: window.location.href,
-                }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                showToast('현재 페이지 URL이 클립보드에 복사되었습니다!');
-            }
+        .hero-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
-
-        // 개별 명소 공유
-        function shareSpot(spotName) {
-            const shareText = `동해시 추천 명소 [${spotName}]에 꼭 방문해 보세요!`;
-            navigator.clipboard.writeText(window.location.href);
-            showToast(`'${spotName}' 안내 링크가 복사되었습니다!`);
+        .action-buttons {
+            display: flex;
+            gap: 10px;
         }
-
-        // 토스트 알림 표시
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 3000);
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
-
-        // URL 파라미터 딥링크 처리 (예시)
-        function checkUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            const spotParam = params.get('spot');
-            if(spotParam) {
-                showToast('공유받은 맞춤 명소 페이지로 이동했습니다.');
-            }
+        .btn-custom {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-    </script>
-</body>
-</html>
+        .btn-custom:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .btn-share {
+            background: #ff5722;
+            color: white;
+        }
+        .btn-share:hover {
+            background: #f4511e;
+        }
+        /* Nav Pills */
+        .nav-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 18px;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pill:hover, .pill.active {
+            background: white;
+            color: #0f2b5c;
+            font-weight: 600;
+        }
+        /* Map Section */
+        .map-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .section-subtitle {
+            color: #0077b6;
+            font
