@@ -1,117 +1,387 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>동해시 인터랙티브 투어 - DONGHAE TRAVEL GUIDE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Pretendard', sans-serif;
-        }
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        /* Header / Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #0f2b5c 0%, #0077b6 100%);
-            color: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .hero-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .brand-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #90e0ef;
-        }
-        .hero-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        .btn-custom {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .btn-custom:hover {
-            background: rgba(255,255,255,0.25);
-        }
-        .btn-share {
-            background: #ff5722;
-            color: white;
-        }
-        .btn-share:hover {
-            background: #f4511e;
-        }
-        /* Nav Pills */
-        .nav-pills {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        .pill {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 18px;
-            border-radius: 20px;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .pill:hover, .pill.active {
-            background: white;
-            color: #0f2b5c;
-            font-weight: 600;
-        }
-        /* Map Section */
-        .map-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .section-subtitle {
-            color: #0077b6;
-            font
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="동해 명소를 클릭해 둘러보는 인터랙티브 투어 가이드">
+<title>동해 투어 가이드</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gothic+A1:wght@300;400;500;700;800&display=swap">
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: editorial coastal guide — sea-horizon hero, map+card explorer, detail dialog, quiz */
+:root{
+  --bg:#eef3f5; --surface:#ffffff; --surface-2:#f5f9fa;
+  --ink:#112230; --muted:#59707d; --line:#d7e2e8;
+  --sea:#0e7c8b; --sea-deep:#0b4455; --dawn:#df5f38; --dawn-2:#efa15c;
+  --shadow:0 12px 32px rgba(12,42,58,.12);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#07141e; --surface:#0e2230; --surface-2:#0b1c28;
+  --ink:#e9f2f6; --muted:#9db4c0; --line:#1d3544;
+  --sea:#3cc2d8; --sea-deep:#0a394a; --dawn:#ff7b4e; --dawn-2:#ffac6c;
+  --shadow:0 14px 36px rgba(0,0,0,.5);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#07141e; --surface:#0e2230; --surface-2:#0b1c28;
+  --ink:#e9f2f6; --muted:#9db4c0; --line:#1d3544;
+  --sea:#3cc2d8; --sea-deep:#0a394a; --dawn:#ff7b4e; --dawn-2:#ffac6c;
+  --shadow:0 14px 36px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);
+  font-family:"Gothic A1","Apple SD Gothic Neo",system-ui,sans-serif;line-height:1.6;}
+.wrap{max-width:1120px;margin:0 auto;
+  padding-left:max(18px,env(safe-area-inset-left,0px));
+  padding-right:max(18px,env(safe-area-inset-right,0px));}
+h1,h2,h3,.serif{font-family:"Gowun Batang",Georgia,serif;}
+.eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--sea);font-weight:700;}
+a{color:inherit}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:0 0 26px 26px;margin-bottom:26px;}
+.hero .sky{position:absolute;inset:0;z-index:0;}
+.hero-in{position:relative;z-index:1;padding-block:52px 44px;}
+.hero h1{font-size:clamp(2.1rem,6.4vw,3.5rem);line-height:1.08;margin:.3em 0 .3em;text-wrap:balance;color:#f3fbfd;}
+.hero p{max-width:40ch;color:#d7edf2;font-size:1.02rem;margin:0;}
+.hero .eyebrow{color:#ffd9b0;}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
+.chip-static{font-size:.78rem;padding:4px 11px;border-radius:999px;background:rgba(255,255,255,.14);color:#eaf6f8;border:1px solid rgba(255,255,255,.22);}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px;align-items:center;}
+.controls .lead{font-size:.8rem;color:var(--muted);margin-right:4px;letter-spacing:.02em;}
+.chip{font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;
+  padding:7px 15px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--muted);transition:.15s;}
+.chip:hover{border-color:var(--sea);color:var(--ink);}
+.chip[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff;}
+
+/* explorer */
+.explore{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:26px;align-items:start;}
+@media (max-width:860px){.explore{grid-template-columns:1fr;gap:20px;}}
+.mapcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);position:sticky;top:16px;}
+@media (max-width:860px){.mapcard{position:static;}}
+.mapcard h2{font-size:1.02rem;margin:2px 2px 12px;}
+.mapstage{position:relative;width:100%;aspect-ratio:3/4;max-width:100%;border-radius:12px;overflow:hidden;background:var(--surface-2);}
+.mapstage svg{position:absolute;inset:0;width:100%;height:100%;}
+.pin{position:absolute;transform:translate(-50%,-100%);cursor:pointer;background:none;border:0;padding:0;
+  width:30px;height:38px;transition:.15s;}
+.pin .dot{width:26px;height:26px;border-radius:50% 50% 50% 2px;transform:rotate(45deg);
+  background:var(--dawn);border:2px solid var(--surface);box-shadow:0 3px 8px rgba(0,0,0,.28);
+  display:grid;place-items:center;}
+.pin .dot b{transform:rotate(-45deg);color:#fff;font-size:.72rem;font-weight:800;font-family:"Gothic A1",sans-serif;}
+.pin:hover,.pin:focus-visible{transform:translate(-50%,-108%) scale(1.08);outline:none;}
+.pin.sea .dot{background:var(--sea);}
+.pin.dim{opacity:.26;filter:saturate(.3);}
+.maphint{font-size:.76rem;color:var(--muted);margin:11px 3px 1px;}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+@media (max-width:520px){.grid{grid-template-columns:1fr;}}
+.card{text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+  transition:.18s;box-shadow:0 1px 0 rgba(0,0,0,.02);}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--sea);}
+.card:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+.thumb{aspect-ratio:3/2;background:var(--surface-2);border-bottom:1px solid var(--line);position:relative;}
+.thumb svg{position:absolute;inset:0;width:100%;height:100%;}
+.card .body{padding:13px 15px 16px;display:flex;flex-direction:column;gap:3px;flex:1;}
+.card .cat{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);font-weight:700;}
+.card h3{font-size:1.16rem;margin:1px 0 0;line-height:1.2;}
+.card .tag{font-size:.86rem;color:var(--muted);min-width:0;}
+.card .go{margin-top:8px;font-size:.78rem;color:var(--dawn);font-weight:700;}
+
+/* detail dialog */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(7,20,30,.55);backdrop-filter:blur(3px);
+  display:grid;place-items:end center;padding:0;}
+@media (min-width:640px){.scrim{place-items:center;padding:24px;}}
+.sheet{background:var(--surface);color:var(--ink);width:100%;max-width:560px;max-height:92vh;overflow:auto;
+  border-radius:20px 20px 0 0;box-shadow:var(--shadow);}
+@media (min-width:640px){.sheet{border-radius:20px;}}
+.sheet .hero2{aspect-ratio:16/7;background:var(--surface-2);position:relative;border-bottom:1px solid var(--line);}
+.sheet .hero2 svg{position:absolute;inset:0;width:100%;height:100%;}
+.closeb{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.1rem;cursor:pointer;
+  display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18);}
+.sheet .in{padding:20px 22px 26px;}
+.sheet .cat{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sea);font-weight:700;}
+.sheet h2{font-size:1.72rem;margin:3px 0 2px;line-height:1.15;}
+.sheet .sub{color:var(--muted);font-size:.9rem;margin-bottom:14px;}
+.sheet p{margin:0 0 14px;}
+.facts{display:grid;gap:10px;margin:4px 0 2px;}
+.fact{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:start;
+  padding:11px 13px;background:var(--surface-2);border-radius:11px;font-size:.92rem;}
+.fact b{font-family:"Gothic A1",sans-serif;color:var(--sea);font-weight:700;font-size:.82rem;}
+
+/* quiz */
+.quiz{margin:46px 0 10px;background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:clamp(20px,4vw,34px);box-shadow:var(--shadow);}
+.quiz .eyebrow{color:var(--dawn);}
+.quiz h2{font-size:1.6rem;margin:.25em 0 .1em;}
+.quiz .lede{color:var(--muted);margin:0 0 20px;}
+.q{margin-bottom:20px;}
+.q .qt{font-weight:700;margin-bottom:9px;font-size:1.04rem;}
+.opts{display:grid;gap:8px;}
+@media (min-width:520px){.opts{grid-template-columns:1fr 1fr;}}
+.opt{font:inherit;text-align:left;cursor:pointer;padding:11px 14px;border-radius:11px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);transition:.14s;}
+.opt:hover{border-color:var(--sea);}
+.opt:disabled{cursor:default;}
+.opt.correct{background:color-mix(in srgb,var(--sea) 16%,var(--surface));border-color:var(--sea);font-weight:700;}
+.opt.wrong{background:color-mix(in srgb,var(--dawn) 15%,var(--surface));border-color:var(--dawn);}
+.score{font-family:"Gowun Batang",serif;font-size:1.15rem;margin-top:6px;}
+.again{margin-top:12px;font:inherit;font-weight:700;cursor:pointer;background:var(--dawn);color:#fff;border:0;
+  padding:10px 20px;border-radius:999px;}
+
+footer{margin:40px 0 46px;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);padding-top:18px;}
+footer b{color:var(--ink);font-weight:700;}
+.svg-ink{fill:var(--ink)} .svg-sea{fill:var(--sea)} .svg-sead{fill:var(--sea-deep)}
+.svg-dawn{fill:var(--dawn)} .svg-dawn2{fill:var(--dawn-2)} .svg-surf{fill:var(--surface)} .svg-muted{fill:var(--muted)}
+.svg-line{fill:none;stroke:var(--surface);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+</style>
+</head>
+<body>
+<section class="hero">
+  <svg class="sky" viewBox="0 0 1120 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0b4455"/><stop offset="1" stop-color="#0e7c8b"/>
+      </linearGradient>
+    </defs>
+    <rect width="1120" height="300" fill="url(#sky)"/>
+    <circle cx="880" cy="118" r="52" fill="#efa15c" opacity=".92"/>
+    <circle cx="880" cy="118" r="78" fill="#efa15c" opacity=".18"/>
+    <path d="M0 214 q140 -26 280 0 t280 0 t280 0 t280 0 V300 H0 Z" fill="#0a3a4a" opacity=".55"/>
+    <path d="M0 246 q140 22 280 0 t280 0 t280 0 t280 0 V300 H0 Z" fill="#072c38" opacity=".8"/>
+    <g stroke="#bfe6ec" stroke-width="2" fill="none" opacity=".5" stroke-linecap="round">
+      <path d="M600 150 q24 -10 48 0 t48 0"/><path d="M660 182 q24 -10 48 0 t48 0"/>
+    </g>
+  </svg>
+  <div class="wrap hero-in">
+    <span class="eyebrow">동해 · EAST SEA</span>
+    <h1>동해, 바다를 걷다</h1>
+    <p>촛대바위의 일출부터 묵호의 골목, 두타산 계곡까지. 명소를 눌러 이야기를 열어 보세요.</p>
+    <div class="meta">
+      <span class="chip-static">명소 9곳</span>
+      <span class="chip-static">바다 · 계곡 · 항구 · 골목</span>
+      <span class="chip-static">클릭하는 지도</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="controls" id="filters" role="group" aria-label="분류 필터">
+    <span class="lead">분류</span>
+  </div>
+
+  <div class="explore">
+    <div class="mapcard">
+      <h2 class="serif">해안을 따라</h2>
+      <div class="mapstage" id="mapstage">
+        <svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="300" height="400" fill="var(--surface-2)"/>
+          <path d="M300 0 H150 q-26 44 8 92 q34 44 -2 92 q-30 42 10 86 q30 36 -6 84 q-18 32 4 60 H300 Z" fill="var(--sea)" opacity=".16"/>
+          <path d="M300 0 H150 q-26 44 8 92 q34 44 -2 92 q-30 42 10 86 q30 36 -6 84 q-18 32 4 60 H300 Z" fill="none" stroke="var(--sea)" stroke-width="2" opacity=".5"/>
+          <g stroke="var(--sea)" stroke-width="1.6" fill="none" opacity=".35" stroke-linecap="round">
+            <path d="M232 60 q12 -7 24 0"/><path d="M244 150 q12 -7 24 0"/><path d="M232 250 q12 -7 24 0"/><path d="M246 330 q12 -7 24 0"/>
+          </g>
+          <g opacity=".5"><circle cx="40" cy="34" r="2.4" fill="var(--muted)"/><path d="M40 28 v12 M34 34 h12" stroke="var(--muted)" stroke-width="1.4"/><text x="40" y="23" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Gothic A1,sans-serif">N</text></g>
+        </svg>
+      </div>
+      <p class="maphint">핀을 누르면 그곳의 이야기가 열립니다.</p>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <section class="quiz" id="quiz" aria-label="동해 퀴즈">
+    <span class="eyebrow">작은 퀴즈</span>
+    <h2 class="serif">얼마나 아세요, 우리 동해</h2>
+    <p class="lede">네 문제, 가볍게 풀어 보세요.</p>
+    <div id="quizbody"></div>
+    <p class="score" id="score" hidden></p>
+    <button class="again" id="again" hidden>다시 풀기</button>
+  </section>
+
+  <footer>
+    <p>이 페이지는 <b>AI에게 요청해 만든 예시</b>입니다. 한 사람이, 코딩 없이, 짧은 시간에 만들었습니다.</p>
+    <p>소개 글은 일반적인 안내이며, 운영 시간·교통 등 구체 정보는 방문 전 확인하세요.</p>
+  </footer>
+</main>
+
+<div class="scrim" id="scrim" hidden role="dialog" aria-modal="true" aria-labelledby="dtitle">
+  <div class="sheet" id="sheet">
+    <div class="hero2" id="dhero"><button class="closeb" id="closeb" aria-label="닫기">✕</button></div>
+    <div class="in">
+      <span class="cat" id="dcat"></span>
+      <h2 id="dtitle"></h2>
+      <p class="sub" id="dsub"></p>
+      <p id="ddesc"></p>
+      <div class="facts" id="dfacts"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATS = ["전체","바다·해변","산·계곡","명소·체험","항구"];
+const ILLO = {
+  rock:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><circle class="svg-dawn" cx="93" cy="27" r="13"/><circle class="svg-dawn2" cx="93" cy="27" r="20" opacity=".25"/><path class="svg-ink" d="M34 66 L43 20 L52 66 Z"/><path class="svg-ink" d="M55 66 L61 32 L68 66 Z"/><rect class="svg-sead" y="62" width="120" height="18"/><path class="svg-line" d="M6 60 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0"/></svg>',
+  valley:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><path class="svg-sead" d="M14 64 L30 24 L46 64 Z"/><path class="svg-sea" d="M24 64 L38 16 L54 64 Z"/><rect class="svg-ink" x="70" y="14" width="15" height="50" rx="2"/><rect class="svg-ink" x="98" y="24" width="13" height="40" rx="2"/><rect class="svg-surf" x="87" y="18" width="9" height="46"/><path class="svg-line" d="M88 22 v40 M92 22 v40"/><rect class="svg-sea" x="58" y="64" width="56" height="12"/></svg>',
+  mural:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sead" x="18" y="40" width="22" height="30"/><rect class="svg-sea" x="40" y="28" width="24" height="42"/><rect class="svg-dawn2" x="64" y="20" width="24" height="50"/><rect class="svg-ink" x="88" y="34" width="18" height="36"/><g class="svg-surf"><rect x="24" y="48" width="8" height="8"/><rect x="46" y="38" width="9" height="9"/><rect x="70" y="30" width="9" height="9"/><rect x="93" y="44" width="7" height="7"/></g><path class="svg-dawn" d="M14 70 q30 -12 94 2" fill="none" stroke="var(--dawn)" stroke-width="3" stroke-linecap="round"/></svg>',
+  sky:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sead" y="58" width="120" height="22"/><path class="svg-sea" d="M0 58 q30 -8 60 0 t60 0 v22 H0Z" opacity=".5"/><rect class="svg-ink" x="20" y="40" width="72" height="7" rx="3"/><g stroke="var(--ink)" stroke-width="3"><path d="M30 47 v18 M82 47 v18"/></g><g stroke="var(--dawn)" stroke-width="2.4"><path d="M24 54 h64"/></g><circle class="svg-dawn" cx="98" cy="22" r="9"/></svg>',
+  light:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sead" y="64" width="120" height="16"/><path class="svg-surf" d="M50 20 h20 l5 44 h-30 Z"/><path class="svg-line" d="M52 32 h16 M51 44 h18"/><rect class="svg-dawn" x="54" y="12" width="12" height="10" rx="2"/><g stroke="var(--dawn2,#efa15c)" stroke-width="2.6" opacity=".8"><path d="M66 17 l20 -8 M66 17 l20 8"/></g><circle class="svg-dawn" cx="60" cy="17" r="3"/></svg>',
+  cave:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-ink" width="120" height="80" rx="4"/><path class="svg-sead" d="M30 80 q30 -52 60 0 Z"/><g class="svg-surf"><path d="M44 29 l3 12 3 -12Z"/><path d="M60 26 l3 16 3 -16Z"/><path d="M74 31 l3 11 3 -11Z"/></g><circle class="svg-dawn" cx="60" cy="56" r="5"/><path class="svg-dawn" d="M52 54 q8 -8 16 0" fill="none" stroke="var(--dawn)" stroke-width="2.4"/></svg>',
+  harbor:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sea" y="50" width="120" height="30"/><path class="svg-surf" d="M24 44 h40 l-6 14 H30 Z"/><rect class="svg-ink" x="40" y="26" width="3" height="18"/><path class="svg-dawn" d="M43 28 h16 l-4 8 h-12 Z"/><path class="svg-surf" d="M74 48 h26 l-4 10 H78 Z"/><path class="svg-line" d="M6 66 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0"/></svg>',
+  beach:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sea" width="120" height="48"/><path class="svg-dawn2" d="M0 44 q60 22 120 0 V80 H0Z"/><circle class="svg-dawn" cx="90" cy="20" r="11"/><path class="svg-line" d="M8 30 q12 -6 24 0 t24 0" opacity=".8"/><g><path class="svg-sead" d="M40 58 v-16" stroke="var(--sea-deep)" stroke-width="2.4"/><path class="svg-dawn" d="M30 42 a12 8 0 0 1 24 0 Z"/></g></svg>',
+  cove:'<svg viewBox="0 0 120 80" class="illo" aria-hidden="true"><rect class="svg-sea" width="120" height="52"/><path class="svg-sead" d="M0 0 h38 q6 30 -10 52 H0Z" opacity=".6"/><path class="svg-sead" d="M120 0 h-30 q-4 32 12 52 H120Z" opacity=".6"/><path class="svg-dawn2" d="M0 48 q60 16 120 0 V80 H0Z"/><path class="svg-line" d="M18 60 q40 14 84 -2" opacity=".9"/><circle class="svg-dawn" cx="60" cy="18" r="8"/></svg>'
+};
+const SPOTS = [
+  {id:"chodae",name:"추암 촛대바위",sub:"秋岩 촛대바위 · 추암동",cat:"바다·해변",illo:"rock",pin:[72,76],sea:false,
+   tag:"바다 위로 솟은 일출 명소",
+   desc:"바다에서 촛대처럼 솟은 기암이 추암 촛대바위다. 해 뜨는 순간 바위 끝에 햇살이 걸리는 장면으로 이름나, 새해 일출을 보려는 사람들이 가장 먼저 찾는 곳이다. 바로 옆 해암정과 추암 출렁다리까지 함께 걸으면 짧은 산책 코스가 된다.",
+   facts:[["보는 법","해돋이 직전에 도착해 바위 너머로 떠오르는 해를 담아 보세요."],["함께","해암정 · 추암 출렁다리 · 추암해변"],["이런 분께","일출 사진, 짧고 인상적인 바닷가 산책"]]},
+  {id:"mureung",name:"무릉계곡",sub:"武陵溪谷 · 삼화동",cat:"산·계곡",illo:"valley",pin:[22,66],sea:false,
+   tag:"두타산 자락의 너럭바위와 폭포",
+   desc:"두타산과 청옥산 사이로 흐르는 무릉계곡은 넓은 너럭바위 무릉반석과 맑은 물로 이름난 명승이다. 계곡을 따라 삼화사, 학소대, 쌍폭과 용추폭포가 이어져 걷는 내내 풍경이 바뀐다. 여름 피서지로도, 가을 단풍길로도 좋다.",
+   facts:[["걷는 길","무릉반석 → 삼화사 → 학소대 → 쌍폭·용추폭포"],["때","여름 물놀이, 가을 단풍이 특히 좋음"],["이런 분께","계곡 트레킹, 절집과 폭포를 함께"]]},
+  {id:"nongol",name:"논골담길",sub:"묵호동 언덕마을",cat:"명소·체험",illo:"mural",pin:[55,38],sea:false,
+   tag:"오징어 말리던 시절의 벽화 골목",
+   desc:"묵호등대 아래 가파른 언덕에 자리한 논골담길은 오징어와 명태로 북적이던 시절의 삶을 벽화로 담은 골목이다. 좁은 계단과 담벼락을 따라 그림과 글이 이어지고, 골목 사이로 묵호 앞바다가 내려다보인다.",
+   facts:[["걷는 법","아래에서 등대까지 천천히 오르며 벽화를 따라가기"],["함께","묵호등대 · 도째비골 스카이밸리"],["이런 분께","사진 산책, 옛 항구 마을의 정취"]]},
+  {id:"dokkaebi",name:"도째비골 스카이밸리",sub:"묵호 해안",cat:"명소·체험",illo:"sky",pin:[71,41],sea:false,
+   tag:"바다 위를 걷는 유리 전망",
+   desc:"묵호 해안 절벽에 들어선 도째비골 스카이밸리는 바다 위로 뻗은 해랑전망대와 유리 바닥 전망대로 유명하다. 발밑으로 파도가 보이는 길을 걷고, 바다 쪽으로 달리는 짚와이어로 탁 트인 동해를 내려다볼 수 있다.",
+   facts:[["볼거리","해랑전망대 · 유리 전망대 · 짚와이어"],["함께","논골담길 · 묵호등대"],["이런 분께","스릴, 시원한 바다 전망"]]},
+  {id:"lighthouse",name:"묵호등대",sub:"묵호동 언덕 위",cat:"명소·체험",illo:"light",pin:[60,33],sea:false,
+   tag:"언덕 꼭대기의 하얀 등대",
+   desc:"논골담길을 끝까지 오르면 만나는 하얀 등대가 묵호등대다. 1963년부터 묵호 앞바다를 밝혀 왔고, 등대 주변 전망대에서는 항구와 바다가 한눈에 들어온다. 해 질 녘 풍경이 특히 좋다.",
+   facts:[["보는 법","벽화 골목을 오른 끝에서 바다 전망과 함께"],["때","일몰 무렵 노을"],["이런 분께","전망, 잔잔한 산책의 마무리"]]},
+  {id:"mukho",name:"묵호항",sub:"墨湖港",cat:"항구",illo:"harbor",pin:[66,30],sea:true,
+   tag:"오징어와 명태로 번성한 항구",
+   desc:"묵호항은 오징어와 명태잡이로 북적이던 동해의 대표 항구다. 지금도 활어와 수산물을 만날 수 있고, 수변 공간을 따라 걷기 좋다. 가까운 논골담길과 묵호등대가 이 항구의 옛 시절에서 시작된 이야기다.",
+   facts:[["즐길 것","활어·수산물, 항구 수변 산책"],["함께","논골담길 · 묵호등대 · 도째비골"],["이런 분께","바다 먹거리, 항구의 분위기"]]},
+  {id:"mangsang",name:"망상해변",sub:"望祥海邊",cat:"바다·해변",illo:"beach",pin:[62,12],sea:true,
+   tag:"넓은 백사장의 대표 해수욕장",
+   desc:"망상해변은 완만하고 너른 백사장으로 동해를 대표하는 해수욕장이다. 여름이면 물놀이로 붐비고, 바로 옆 오토캠핑 시설 덕에 가족 단위로 머물기 좋다. 모래밭이 넓어 아이들과 걷기에도 넉넉하다.",
+   facts:[["때","여름 해수욕, 사철 바닷가 산책"],["머물기","오토캠핑·리조트가 가까움"],["이런 분께","가족 나들이, 넓은 모래밭"]]},
+  {id:"cheongok",name:"천곡황금박쥐동굴",sub:"泉谷洞窟 · 도심",cat:"명소·체험",illo:"cave",pin:[40,48],sea:false,
+   tag:"도심에서 만나는 억겁의 석회동굴",
+   desc:"천곡황금박쥐동굴은 도심 한가운데서 걸어 들어갈 수 있는 천연 석회동굴이다. 수억 년에 걸쳐 자란 종유석과 석순, 그리고 이름이 된 황금박쥐를 만날 수 있다. 접근이 쉬워 날씨와 상관없이 찾기 좋다.",
+   facts:[["볼거리","종유석·석순, 동굴 생태와 황금박쥐"],["좋은 점","도심에서 가깝고 사철 일정한 온도"],["이런 분께","비 오는 날, 아이와 함께하는 체험"]]},
+  {id:"hanseom",name:"한섬해변",sub:"한섬 해안",cat:"바다·해변",illo:"cove",pin:[66,56],sea:true,
+   tag:"해안 산책로가 좋은 숨은 바다",
+   desc:"한섬해변은 번잡하지 않게 바다를 즐기기 좋은 숨은 해변이다. 바위와 모래가 어우러진 해안을 따라 산책로가 이어져, 맑은 물빛을 보며 조용히 걷기에 어울린다. 가까이 감추사 같은 작은 볼거리도 있다.",
+   facts:[["걷는 길","해안 산책로를 따라 바위와 바다 감상"],["분위기","한적하고 물빛이 맑음"],["이런 분께","조용한 산책, 사람 적은 바다"]]}
+];
+
+/* render cards */
+const grid = document.getElementById('grid');
+function cardHTML(s){
+  return '<button class="card" data-id="'+s.id+'" aria-haspopup="dialog">'
+    + '<span class="thumb">'+ILLO[s.illo]+'</span>'
+    + '<span class="body"><span class="cat">'+s.cat+'</span>'
+    + '<h3>'+s.name+'</h3><span class="tag">'+s.tag+'</span>'
+    + '<span class="go">자세히 보기 →</span></span></button>';
+}
+grid.innerHTML = SPOTS.map(cardHTML).join('');
+
+/* render pins */
+const stage = document.getElementById('mapstage');
+SPOTS.forEach(s=>{
+  const b=document.createElement('button');
+  b.className='pin'+(s.sea?' sea':'');
+  b.style.left=s.pin[0]+'%'; b.style.top=s.pin[1]+'%';
+  b.dataset.id=s.id; b.setAttribute('aria-label',s.name);
+  b.innerHTML='<span class="dot"><b>'+(SPOTS.indexOf(s)+1)+'</b></span>';
+  stage.appendChild(b);
+});
+
+/* filters */
+const filters=document.getElementById('filters');
+let active="전체";
+CATS.forEach(c=>{
+  const b=document.createElement('button');
+  b.className='chip'; b.textContent=c; b.setAttribute('aria-pressed',c==="전체");
+  b.addEventListener('click',()=>{active=c;applyFilter();
+    [...filters.querySelectorAll('.chip')].forEach(x=>x.setAttribute('aria-pressed',x.textContent===c));});
+  filters.appendChild(b);
+});
+function applyFilter(){
+  SPOTS.forEach((s,i)=>{
+    const on = active==="전체"||s.cat===active;
+    grid.children[i].hidden = !on;
+    const pin=stage.querySelector('.pin[data-id="'+s.id+'"]');
+    if(pin) pin.classList.toggle('dim',!on);
+  });
+}
+
+/* detail dialog */
+const scrim=document.getElementById('scrim'), sheet=document.getElementById('sheet');
+let lastFocus=null;
+function openDetail(id){
+  const s=SPOTS.find(x=>x.id===id); if(!s) return;
+  document.getElementById('dhero').innerHTML='<button class="closeb" id="closeb" aria-label="닫기">✕</button>'+ILLO[s.illo];
+  document.getElementById('dcat').textContent=s.cat;
+  document.getElementById('dtitle').textContent=s.name;
+  document.getElementById('dsub').textContent=s.sub;
+  document.getElementById('ddesc').textContent=s.desc;
+  document.getElementById('dfacts').innerHTML=s.facts.map(f=>'<div class="fact"><b>'+f[0]+'</b><span>'+f[1]+'</span></div>').join('');
+  lastFocus=document.activeElement;
+  scrim.hidden=false; document.body.style.overflow='hidden';
+  document.getElementById('closeb').addEventListener('click',closeDetail);
+  sheet.scrollTop=0;
+  document.getElementById('closeb').focus();
+}
+function closeDetail(){ scrim.hidden=true; document.body.style.overflow='';
+  if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+scrim.addEventListener('click',e=>{ if(e.target===scrim) closeDetail(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!scrim.hidden) closeDetail(); });
+grid.addEventListener('click',e=>{ const c=e.target.closest('.card'); if(c) openDetail(c.dataset.id); });
+stage.addEventListener('click',e=>{ const p=e.target.closest('.pin'); if(p) openDetail(p.dataset.id); });
+
+/* quiz */
+const QUIZ=[
+ {q:"애국가 영상에도 자주 나오는, 바다에서 솟은 동해의 일출 명소는?",a:"추암 촛대바위",o:["망상해변","추암 촛대바위","묵호항","무릉계곡"]},
+ {q:"묵호등대 아래 언덕, 오징어 말리던 시절을 벽화로 담은 골목은?",a:"논골담길",o:["논골담길","한섬해변","도째비골 스카이밸리","삼화사"]},
+ {q:"두타산 자락, 무릉반석과 쌍폭·용추폭포로 이름난 명승 계곡은?",a:"무릉계곡",o:["천곡동굴","망상해변","무릉계곡","묵호항"]},
+ {q:"도심 가까이에서 걸어 들어가는, 황금박쥐로 이름난 천연 동굴은?",a:"천곡황금박쥐동굴",o:["천곡황금박쥐동굴","도째비골 스카이밸리","추암 촛대바위","한섬해변"]}
+];
+const quizbody=document.getElementById('quizbody'), scoreEl=document.getElementById('score'), againBtn=document.getElementById('again');
+let answered=0, correct=0;
+function renderQuiz(){
+  answered=0; correct=0; scoreEl.hidden=true; againBtn.hidden=true;
+  quizbody.innerHTML=QUIZ.map((q,i)=>'<div class="q"><div class="qt">'+(i+1)+'. '+q.q+'</div><div class="opts" data-q="'+i+'">'
+    +q.o.map(o=>'<button class="opt" data-v="'+o+'">'+o+'</button>').join('')+'</div></div>').join('');
+}
+quizbody.addEventListener('click',e=>{
+  const btn=e.target.closest('.opt'); if(!btn) return;
+  const opts=btn.parentElement; if(opts.dataset.done) return;
+  opts.dataset.done="1";
+  const qi=+opts.dataset.q, ans=QUIZ[qi].a;
+  [...opts.children].forEach(b=>{ b.disabled=true;
+    if(b.dataset.v===ans) b.classList.add('correct');
+    else if(b===btn) b.classList.add('wrong'); });
+  if(btn.dataset.v===ans) correct++;
+  answered++;
+  if(answered===QUIZ.length){
+    scoreEl.textContent='4문제 중 '+correct+'문제 정답! '+(correct===4?'동해 토박이시네요.':correct>=2?'제법인데요.':'이번 주말, 한 곳 다녀오실래요?');
+    scoreEl.hidden=false; againBtn.hidden=false;
+  }
+});
+againBtn.addEventListener('click',renderQuiz);
+renderQuiz();
+</script>
+
+</body>
+</html>
