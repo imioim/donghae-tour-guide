@@ -404,9 +404,9 @@ renderQuiz();
   var el = document.getElementById('kakaomap');
   if(!el) return;
   var COORDS = {
-    chodae:[37.4458,129.1445], mureung:[37.4557,129.0356], nongol:[37.5498,129.1158],
-    dokkaebi:[37.5471,129.1180], lighthouse:[37.5504,129.1171], mukho:[37.5488,129.1153],
-    mangsang:[37.5903,129.0971], cheongok:[37.5255,129.1110], hanseom:[37.5226,129.1346]
+    chodae:[37.479244,129.159778], mureung:[37.463390,129.017462], nongol:[37.552741,129.116528],
+    dokkaebi:[37.555207,129.119121], lighthouse:[37.554494,129.118611], mukho:[37.550667,129.112984],
+    mangsang:[37.593286,129.090426], cheongok:[37.517446,129.110113], hanseom:[37.520405,129.121913]
   };
   function fail(){ el.innerHTML='<div class="maploadfail">지도를 불러오지 못했습니다.<br>카카오 개발자 콘솔 &gt; 플랫폼 &gt; Web 에<br>이 사이트 주소가 등록됐는지 확인해 주세요.</div>'; }
   if(!(window.kakao && kakao.maps && kakao.maps.load)){ fail(); return; }
